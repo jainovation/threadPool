@@ -82,59 +82,6 @@ void Server::sendFile()
     std::cout << "파일 전송 완료.\n";
 }
 
-void Server::receiveFile()
-{
-    // 파일 수신
-    char buffer[1024];
-    std::ofstream receivedFile("received_file.txt", std::ios::binary);
-    int bytesRead;
-
-    while (true)
-    {
-        fd_set readSet = m_masterSet;
-        int activity = select(m_maxSocket + 1, &readSet, nullptr, nullptr, nullptr);
-
-        if (activity == -1)
-        {
-            perror("select");
-            exit(EXIT_FAILURE);
-        }
-
-        for (int i = 0; i <= m_maxSocket; ++i)
-        {
-            if (FD_ISSET(i, &readSet))
-            {
-                if (i == m_serverSocket)
-                {
-                    // 새로운 클라이언트 연결 수락
-                    acceptClient();
-                }
-                else
-                {
-                    // 클라이언트로부터 데이터 읽기
-                    bytesRead = recv(i, buffer, sizeof(buffer), 0);
-
-                    if (bytesRead <= 0)
-                    {
-                        // 클라이언트 연결이 종료됨
-                        std::cout << "클라이언트 연결이 종료되었습니다.\n";
-                        close(i);
-                        FD_CLR(i, &m_masterSet);
-                    }
-                    else
-                    {
-                        // 파일에 데이터 쓰기
-                        receivedFile.write(buffer, bytesRead);
-                    }
-                }
-            }
-        }
-    }
-
-    receivedFile.close();
-    std::cout << "파일 수신 완료.\n";
-}
-
 void Server::start()
 {
     listenForClients();

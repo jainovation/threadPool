@@ -20,7 +20,6 @@ private:
     sockaddr_in m_serverAddr;
 
     void connectToServer();
-    void sendFile();
     void receiveFile();
 };
 

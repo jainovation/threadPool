@@ -25,7 +25,6 @@ private:
     void bindSocket();
     void listenForClients();
     void acceptClient();
-    void receiveFile();
     void sendFile();
 };
 

@@ -29,47 +29,6 @@ void Client::connectToServer()
     std::cout << "서버에 연결되었습니다.\n";
 }
 
-void Client::sendFile()
-{
-    // 파일 열기
-    std::ifstream fileToSend("test2.txt", std::ios::binary);
-
-    // 파일 전송
-    char buffer[1024];
-    int bytesRead;
-
-    while (true)
-    {
-        fd_set writeSet;
-        FD_ZERO(&writeSet);
-        FD_SET(m_clientSocket, &writeSet);
-
-        int activity = select(m_clientSocket + 1, nullptr, &writeSet, nullptr, nullptr);
-
-        if (activity == -1)
-        {
-            perror("select");
-            exit(EXIT_FAILURE);
-        }
-
-        bytesRead = fileToSend.readsome(buffer, sizeof(buffer));
-
-        if (bytesRead > 0)
-        {
-            // 파일 데이터를 서버에 전송
-            send(m_clientSocket, buffer, bytesRead, 0);
-        }
-        else
-        {
-            // 파일 전송이 완료되면 반복문 종료
-            break;
-        }
-    }
-
-    fileToSend.close();
-    std::cout << "파일 전송 완료.\n";
-}
-
 void Client::receiveFile()
 {
     // 파일 수신
