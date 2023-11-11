@@ -53,10 +53,10 @@ void Server::acceptClient()
     }
 }
 
-void Server::sendFile()
+void Server::sendFile(const std::string& filename)
 {
     // 파일 열기
-    std::ifstream fileToSend("test2.txt", std::ios::binary);
+    std::ifstream fileToSend(filename, std::ios::binary);
 
     // 파일 전송
     char buffer[1024];
@@ -82,10 +82,14 @@ void Server::sendFile()
     std::cout << "파일 전송 완료.\n";
 }
 
-void Server::start()
-{
+void Server::start() {
     listenForClients();
+
+    // 파일 이름 입력 받기
+    std::string filename;
+    std::cout << "전송할 파일의 이름을 입력하세요: ";
+    std::cin >> filename;
+
     acceptClient();
-    // receiveFile();
-    sendFile();
+    sendFile(filename);
 }

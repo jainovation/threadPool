@@ -25,7 +25,7 @@ private:
     void bindSocket();
     void listenForClients();
     void acceptClient();
-    void sendFile();
+    void sendFile(const std::string& filename);
 };
 
 #endif // SERVER_H
