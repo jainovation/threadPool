@@ -1,0 +1,8 @@
+# .vscode file
+.vscode
+
+# .out
+*.out
+
+# .json
+*.json
